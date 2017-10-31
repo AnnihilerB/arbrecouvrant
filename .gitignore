@@ -1,0 +1,10 @@
+main
+form.cnf
+glucose-syrup-4.1/simp/glucose
+glucose-syrup-4.1/utils/System.o
+glucose-syrup-4.1/utils/Options.o
+glucose-syrup-4.1/simp/sol.out
+glucose-syrup-4.1/simp/Main.o
+glucose-syrup-4.1/simp/glucose
+glucose-syrup-4.1/simp/depend.mk
+glucose-syrup-4.1/core/Solver.o
