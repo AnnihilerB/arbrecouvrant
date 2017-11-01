@@ -7,13 +7,14 @@
 int main(void){
 
     FILE *fichier = fopen("sol.out", "r");
-    FILE *sortie = fopen("arbrecouvrant.sol", "rw");
 
     int buffer;
 
     while(fscanf(fichier, "%d", &buffer) == 1){
         if (buffer > 0){
-            printf("%d\n", buffer);
+            printf("%d ", buffer);
         }
     }
+    printf("\n");
+    fclose(fichier);
 }
