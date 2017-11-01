@@ -25,10 +25,10 @@ int are_adjacent(int u, int v){
       return graph[u][v];
 }
 
+//Le sommet ne peut avoir qu'une seule hauteur à la fois.
 void clause1(int filedesc, int n, int k){
     for (int i=1; i<=n; i++){
-        int h_suppose = 0;
-        for (int p = 0; p<=k; p++){
+        for (int h_suppose = 0; h_suppose<=k; h_suppose++){
             for (int h_impossible = 0; h_impossible <= k; h_impossible++){
                 char buf[2];
                 if (h_suppose != h_impossible){
@@ -53,7 +53,6 @@ void clause1(int filedesc, int n, int k){
                     write(filedesc,"\n",1);
                 }
             }
-            h_suppose++;
         }
 
     }
@@ -152,9 +151,33 @@ int main(int argc, char *argv[]){
     int nb_sommets = orderG();
     //Hauteur désirée de l'arbre couvrant
     int k = atoi(argv[1]);
-    printf("JE SUIS K :%d\n", k);
+
     clause1(filedesc, nb_sommets, k);
     clause2(filedesc, nb_sommets);
     clause3(filedesc, nb_sommets, k);
     clause4(filedesc, nb_sommets, k);
+
+    close(filedesc);
+
+    pid_t pid_fils;
+    int status;
+    pid_fils = fork();
+
+    if (pid_fils != 0){
+        //Pere
+        wait(&status);
+        printf("----- Arbre couvrant -----\n");
+        execlp("./arbrecouvrant", "./arbrecouvrant", NULL);
+    }
+    else{
+        //Fils
+        execlp("./glucose-syrup-4.1/simp/glucose", "./glucose-syrup-4.1/simp/glucose", "form.cnf", "sol.out", NULL);
+        sleep(4);
+        printf("FILS FINI\n");
+
+    }
+
+    return 0;
+
+
 }
