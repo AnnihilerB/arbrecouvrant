@@ -7,12 +7,14 @@
 
 #define SIZE_BUFFER 1000
 
+int nb_clauses = 0;
+
 int orderG(){
-    return 10;}
+    return 3;}
     
     int sizeG(){
     return 10;}
-    
+/*    
   int are_adjacent(int u, int v){
      if(0<= u && 0<=v && u<10 && v<10){
       return (((10+u-v)%10==1)||((10+v-u)%10==1));
@@ -20,6 +22,7 @@ int orderG(){
      else return 0;
     }
 
+    */
 
 int graph[3][3] = {
   // 0  1  2
@@ -28,10 +31,10 @@ int graph[3][3] = {
     {1, 1, 0}  //2
 };
 
-/*int are_adjacent(int u, int v){
+int are_adjacent(int u, int v){
       return graph[u][v];
 }
-*/
+
 //Le sommet ne peut avoir qu'une seule hauteur à la fois.
 void clause1(FILE *filedesc, int n, int k){
     for (int i=1; i<=n; i++){
@@ -172,6 +175,11 @@ void clause3(FILE *filedesc, int n, int k){
     fwrite("\n",sizeof(char),sizeof(char),filedesc);
 }
 
+void ecrireInit(FILE *filedesc, int nb_sommets, int hauteur){
+    int nb_variables = (nb_sommets *10) + hauteur;
+    fprintf(filedesc, "p cnf %d %d\n", nb_variables, nb_clauses);
+}
+
 
 int main(int argc, char *argv[]){
     //////// ARBRE ATTENDU DE TAILLE 3 ////////////
@@ -181,7 +189,13 @@ int main(int argc, char *argv[]){
     //Hauteur désirée de l'arbre couvrant
     int k = atoi(argv[1]);
 
+    int nb_clause1 = ((k+1)*k*nb_sommets)+nb_sommets;
+    int nb_clause2 = (nb_sommets-1)*nb_sommets;
+    int nb_clause3 = 1;
+    int nb_clause4 = (k*nb_sommets)+1;
 
+    nb_clauses = nb_clause1 + nb_clause2 + nb_clause3 + nb_clause4;
+    ecrireInit(filedesc, nb_sommets, k);
     clause1(filedesc, nb_sommets, k);
     clause2(filedesc, nb_sommets);
     clause3(filedesc, nb_sommets, k);
